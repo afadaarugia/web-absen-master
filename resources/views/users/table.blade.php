@@ -12,7 +12,6 @@
             <th width="300px">Username</th>
             <th>NIK</th>
             <th>Email</th>
-            <th>Data Karyawan</th>
             <th colspan="3">Action</th>
             </tr>
         </thead>
@@ -44,5 +43,6 @@
         @endforeach
         </tbody>
     </table>
+    {{ $users->links() }}
     </div>
 </div>

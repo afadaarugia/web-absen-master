@@ -11,10 +11,10 @@
                 <th>Nama Karyawan</th>
                 <th>Time In Terakhir</th>
                 <th>Time Out Terakhir</th>
-{{--                <th>Keterangan Absen</th>--}}
                 <th>Total Absen</th>
-
+                @if(Auth::user()->akses == 'admin')
                 <th colspan="3">Action</th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -35,15 +35,16 @@
                     @else
                     <td>Belum Absen</td>
                     @endif
-{{--                <td>{{ $absensi->keterangan }}</td>--}}
-                <td>{{ $absensi->total}}</td>
+                    <td>{{ $absensi->total}}</td>
 
+                    @if(Auth::user()->akses == 'admin')                   
                 <td>
                     {!! Form::open(['route' => ['absensis.destroy', $absensi->karyawans_id], 'method' => 'delete']) !!}
                     <div class='btn-group'>
                         <a href="{{ route('absensis.show', [$absensi->karyawans_id]) }}" class='btn btn-default btn-xs'><i class="fas fa-eye"></i></a>
                     </div>
                 </td>
+                    @endif
             </tr>
         @endforeach
         </tbody>

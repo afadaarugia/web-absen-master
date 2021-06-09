@@ -24,6 +24,11 @@ Route::get('/login','Auth\LoginController@showLoginForm')->name('login');
 Route::post('/login','Auth\LoginController@login');
 Route::post('/logout','Auth\LoginController@logout');
 
+//absensi Route
+Route::get('/rekap', 'AbsensiController@Rekap')->name('absensis.rekap');
+Route::resource('absensis', 'AbsensiController');
+Route::get('/export', 'AbsensiController@export')->name('absensis.export');
+
 Route::group(['middleware' => 'auth'],function(){
 
 	Route::get('/home', 'HomeController@index')->name('home');
@@ -33,17 +38,12 @@ Route::group(['middleware' => 'auth'],function(){
 
 	Route::get('/download', 'KaryawanController@export_image')->name('karyawans.export_image');
 
-	//absensi Route
-	Route::get('/rekap', 'AbsensiController@Rekap')->name('absensis.rekap');
 
 	Route::group(['middleware' => 'akses'],function(){
 
 			Route::get('/register','Auth\RegisterController@showRegistrationForm')->name('register');
 
 			Route::post('/register','Auth\RegisterController@register');
-
-			Route::resource('absensis', 'AbsensiController');
-			Route::get('/export', 'AbsensiController@export')->name('absensis.export');
 
 			Route::resource('levels', 'LevelController');
 

@@ -212,7 +212,7 @@ class AbsensiAPIController extends AppBaseController
        $distance = $d_calculator->CalculateDistance($long,$lat, $longitude, $latitude);
        //return $distance;
 
-       if ($distance <= 0.15){
+       if ($distance <= 0.10){
 
             $hour = Carbon::now()->hour;
 

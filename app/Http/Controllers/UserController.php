@@ -40,9 +40,8 @@ class UserController extends AppBaseController
     public function index(Request $request)
     {
         $users = $this->userRepository->all();
-
-//        $karyawan = Karyawan::where('users_id')
-
+        $users = User::paginate(10);
+        
         return view('users.index')
             ->with('users', $users);
     }
@@ -141,22 +140,22 @@ class UserController extends AppBaseController
      */
     public function update($id, UpdateUserRequest $request)
     {
-        $user = $this->userRepository->find($id);
+        $users = $this->userRepository->find($id);
         $input = $request->all();
         $input['password'] = Hash::make($request['password']);
-
-
-        if (empty($user)) {
+        
+        if (empty($users)) {
             Flash::error('User not found');
 
             return redirect(route('users.index'));
         }
 
-        $user = $this->userRepository->update($input, $id);
+        $users = $this->userRepository->update($input, $id);
 
         Flash::success('User updated successfully.');
-
         return redirect(route('users.index'));
+
+       
     }
 
     /**

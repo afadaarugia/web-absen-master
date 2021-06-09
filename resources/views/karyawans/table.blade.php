@@ -31,7 +31,6 @@
                             <td>{{ $karyawan->namePosisions->nama }}</td>
                             <td>{{ $karyawan->units->nama }}</td>
                             <td>{{ $karyawan->sektor->nama }}</td>
-                            <td>{{ $karyawan->agamas->nama }}</td>
                             <td>{{ $karyawan->statuses->nama }}</td>
                             <td>
                                 {!! Form::open(['route' => ['karyawans.destroy', $karyawan->id], 'method' => 'delete']) !!}

@@ -246,5 +246,5 @@
 <!-- Submit Field -->
 <div class="col-sm-12" style="padding-top: 15px;">
     {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
-    <a href="{{ route('karyawans.index') }}" class="btn btn-default">Cancel</a>
+    <a href="{{ route('users.index') }}" class="btn btn-default">Cancel</a>
 </div>

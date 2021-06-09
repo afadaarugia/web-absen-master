@@ -37,17 +37,29 @@ class AbsensiController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $start = Carbon::now()->startOfMonth()->format('Y-m-d H:i:s');
-        $end = Carbon::now()->endOfMonth()->format('Y-m-d H:i:s');
-
+    $start = Carbon::now()->startOfMonth()->format('Y-m-d H:i:s');
+    $end = Carbon::now()->endOfMonth()->format('Y-m-d H:i:s');
+    if(Auth::user()->akses == 'admin'){
         if ($request->start != '' and $request->end != '') {
+            
+            $data['data'] = DB::table('karyawan')->where('id','=', auth()->user()->id)->first();
+
             $start = Carbon::parse($request->start)->format('Y-m-d H:i:s');
             $end = Carbon::parse($request->end)->format('Y-m-d H:i:s');
-
-            $absenIn = DB::table('absensis')
-                    ->select(DB::raw('count(absensis.created_at) as total, karyawans.nama_lengkap as nama_karyawan,karyawans.nik as nik_karyawan, absensis.karyawans_id as karyawans_id'),
-                        DB::raw('max(time_in) as time_in,max(time_out) as time_out , keterangan, absensis.deleted_at
-                        '))
+            
+            return view('absensis.index',compact('karyawan', 'data','post'));
+        }       
+        
+        $absenIn = DB::table('absensis')
+                    ->select(DB::raw(
+                        'count(absensis.created_at) as total,
+                        karyawans.nama_lengkap as nama_karyawan,
+                        karyawans.nik as nik_karyawan,
+                        absensis.karyawans_id as karyawans_id'),
+                        DB::raw('max(time_in) as time_in,
+                        max(time_out) as time_out, 
+                        keterangan,
+                        absensis.deleted_at'))
                     ->where('absensis.deleted_at' , null)
                     ->whereBetween('absensis.created_at', [$start, $end])
                     ->join('karyawans', 'absensis.karyawans_id', 'karyawans.id')
@@ -55,29 +67,23 @@ class AbsensiController extends AppBaseController
                     ->groupBy('nik_karyawan','nama_karyawan','karyawans_id','keterangan','deleted_at')
                     ->get();
 
-       //return $absenIn;
-
         return view('absensis.index',compact('absenIn'));
+    } else {
+        $absenIn = DB::table('absensis')
+        ->select(DB::raw('count(absensis.created_at) as total, karyawans.nama_lengkap as nama_karyawan,karyawans.nik as nik_karyawan,absensis.karyawans_id as karyawans_id'),
+            DB::raw('max(time_in) as time_in,max(time_out) as time_out, keterangan, absensis.deleted_at'))
+        ->where('absensis.deleted_at' , null)
+        ->whereBetween('absensis.created_at', [$start, $end])
+        ->join('karyawans', 'absensis.karyawans_id', 'karyawans.id')
+        ->orderBy('nama_karyawan')
+        ->where('karyawans.users_id', auth()->user()->id)
+        ->groupBy('nik_karyawan','nama_karyawan','karyawans_id','keterangan','deleted_at')
+        ->first();
 
+        // dd($absenIn);
+
+        return redirect(route('absensis.show', $absenIn->karyawans_id));
         }
-        // $sql = Absensi::all()->whereBetween('created_at',[Carbon::now()->format('Y-m-d'),Carbon::now()->addDays()->format('Y-m-d ')]);
-        // return $sql;
-
-
-       $absenIn = DB::table('absensis')
-                    ->select(DB::raw('count(absensis.created_at) as total, karyawans.nama_lengkap as nama_karyawan,karyawans.nik as nik_karyawan,absensis.karyawans_id as karyawans_id'),
-                        DB::raw('max(time_in) as time_in,max(time_out) as time_out, keterangan, absensis.deleted_at
-                        '))
-                    ->where('absensis.deleted_at' , null)
-                    ->whereBetween('absensis.created_at', [$start, $end])
-                    ->join('karyawans', 'absensis.karyawans_id', 'karyawans.id')
-                    ->orderBy('nama_karyawan')
-                    ->groupBy('nik_karyawan','nama_karyawan','karyawans_id','keterangan','deleted_at')
-                    ->get();
-
-       //return $absenIn;
-
-        return view('absensis.index',compact('absenIn'));
     }
 
     /**

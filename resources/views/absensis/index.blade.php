@@ -43,6 +43,7 @@
         </div>
     </div>
 
+    @if(Auth::user()->akses == 'admin')
     <div class="card-body">
         <div class="row" >
               <div class="col-md-12">
@@ -51,6 +52,7 @@
               </div>
           </div>
     </div>
+    @endif
 
 
     <div class="content">

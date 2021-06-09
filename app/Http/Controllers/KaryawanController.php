@@ -143,7 +143,6 @@ class KaryawanController extends AppBaseController
         $User = User::pluck ('name','id');
         $Level = Level::pluck ('nama','id');
         $NamePosition = NamePosition::pluck ('nama','id');
-        $Agama = Agama::pluck ('nama','id');
         $Sektor = Sektor::pluck ('nama','id');
         $Unit = Unit::pluck ('nama','id');
         $Status = Status::pluck ('nama','id');
@@ -153,7 +152,7 @@ class KaryawanController extends AppBaseController
         if (empty($karyawan)) {
             Flash::error('Karyawan not found');
 
-            return redirect(route('karyawans.index'));
+            return redirect(route('users.index'));
         }
 
         return view('karyawans.edit',compact(
@@ -161,7 +160,6 @@ class KaryawanController extends AppBaseController
             'User',
             'Level',
             'NamePosition',
-            'Agama',
             'Sektor',
             'Unit',
             'Status'

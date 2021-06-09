@@ -1,4 +1,14 @@
-
+        <li class="nav-item">
+            <a href="{{ route('absensis.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-file-alt"></i>
+              <p>
+                Data Absensi
+                <span class="right badge badge-danger"></span>
+              </p>
+            </a>
+        </li>
+        
+@if(Auth::user()->akses == 'admin')
         <li class="nav-item">
             <a href="{{ route('fotoRecognitions.index') }}" class="nav-link">
                 <i class="nav-icon fas fa-id-card	"></i>
@@ -19,15 +29,6 @@
             </a>
         </li>
 
-        <li class="nav-item">
-            <a href="{{ route('absensis.index') }}" class="nav-link">
-              <i class="nav-icon fas fa-file-alt"></i>
-              <p>
-                Data Absensi
-                <span class="right badge badge-danger"></span>
-              </p>
-            </a>
-        </li>
 
         <li class="nav-item">
             <a href="{{ route('users.index') }}" class="nav-link">
@@ -98,3 +99,4 @@
               </li>
             </ul>
         </li>
+@endif
